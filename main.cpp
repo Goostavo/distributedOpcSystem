@@ -1,3 +1,4 @@
+//Trabalho de Sistemas Distribuídos para automação
 //main.c
 #include <iostream>
 
