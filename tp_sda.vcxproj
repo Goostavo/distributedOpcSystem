@@ -60,22 +60,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="MailslotOperations.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Opcclass.cpp" />
+    <ClCompile Include="OPCClient.cpp" />
     <ClCompile Include="SimpleOPCClient\opcda_i.c" />
     <ClCompile Include="SimpleOPCClient\SimpleOPCClient_v3.cpp" />
     <ClCompile Include="SimpleOPCClient\SOCAdviseSink.cpp" />
     <ClCompile Include="SimpleOPCClient\SOCDataCallback.cpp" />
     <ClCompile Include="SimpleOPCClient\SOCWrapperlFunctions.cpp" />
+    <ClCompile Include="SocketClient.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MailslotOperations.h" />
     <ClInclude Include="Opcclass.h" />
+    <ClInclude Include="OPCClient.h" />
     <ClInclude Include="SimpleOPCClient\opcda.h" />
     <ClInclude Include="SimpleOPCClient\opcerror.h" />
     <ClInclude Include="SimpleOPCClient\SimpleOPCClient_v3.h" />
     <ClInclude Include="SimpleOPCClient\SOCAdviseSink.h" />
     <ClInclude Include="SimpleOPCClient\SOCDataCallback.h" />
     <ClInclude Include="SimpleOPCClient\SOCWrapperFunctions.h" />
+    <ClInclude Include="SocketClient.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
