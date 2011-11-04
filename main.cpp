@@ -11,9 +11,9 @@
 int main (void)
 {
 	std::cout << "Hello World!" << std::endl;
-	Opcclass Opc_tp = new Opcclass();			//Instancia Classe OPC
-	Opc_tp.AddGroup();
-	Opc_tp.AddItem();
+	Opcclass *Opc_tp = new Opcclass();			//Instancia Classe OPC
+	Opc_tp->AddGroup();
+	Opc_tp->AddItem();
 	system("pause");
 	return 0;
 }

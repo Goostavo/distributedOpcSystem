@@ -37,7 +37,7 @@ Opcclass::~Opcclass()
 	CoUninitialize();
 }
 
-void Opcclass::Addgroup()
+void Opcclass::AddGroup()
 {
 	// Add the OPC group the OPC server and get an handle to the IOPCItemMgt
 	//interface:
@@ -45,12 +45,12 @@ void Opcclass::Addgroup()
 	AddTheGroup(pIOPCServer, pIOPCItemMgt, hServerGroup);
 }
 
-void Opcclass::Additem()
+void Opcclass::AddItem()
 {
 	// Add the OPC item. First we have to convert from wchar_t* to char*
 	// in order to print the item name in the console.
 
-    // Defining the items in the server
+    // Defining the items in the server, used a typecast to work properly
     ITEM_ID=(wchar_t *)L"Saw-toothed Waves.Real4";
 
     size_t m;
