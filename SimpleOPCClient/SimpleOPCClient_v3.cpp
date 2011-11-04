@@ -153,7 +153,7 @@ void main2(void)
     CancelAdviseSink(pIDataObject, tkAsyncConnection);
 	pSOCAdviseSink->Release();
     
-	// Establish a callback asynchronous read by means of the IOPCDaraCallback
+// Establish a callback asynchronous read by means of the IOPCDaraCallback
 	// (OPC DA 2.0) method. We first instantiate a new SOCDataCallback object and
 	// adjusts its reference count, and then call a wrapper function to
 	// setup the callback.

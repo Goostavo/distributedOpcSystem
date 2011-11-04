@@ -33,7 +33,8 @@ class Opcclass
 			~Opcclass();
             
             void Opcclass::AddGroup();
-            void Opcclass::AddItem();
+            void Opcclass::AddItem(wchar_t *endereco);
+
     private:
 
 
@@ -45,6 +46,7 @@ class Opcclass
 
             char buf[100];
             wchar_t *ITEM_ID;
+            int nItens;
 };
 
 #endif

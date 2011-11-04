@@ -11,13 +11,14 @@ Opcclass::Opcclass()
     //Initializing some variables
     pIOPCServer = NULL;   //pointer to IOPServer interface
     pIOPCItemMgt = NULL;  //pointer to IOPCItemMgt interface
+    nItens = 0;
 
     // Have to be done before using microsoft COM library:
     std::cout << "Initializing the COM environment..." << std::endl;
 	CoInitialize(NULL);
 
     // Let's instantiante the IOPCServer interface and get a pointer of it:
-	std::cout << "Intantiating the MATRIKON OPC Server for Simulation...\n" << std::endl;
+	std::cout << "Instantiating the MATRIKON OPC Server for Simulation..." << std::endl;
 	pIOPCServer = InstantiateServer(OPC_SERVER_NAME);
 }
 
@@ -29,11 +30,11 @@ Opcclass::Opcclass()
 Opcclass::~Opcclass()
 {
     // release the interface references:
-	std::cout << "Removing the OPC server object...\n" << std::endl;
+	std::cout << "Removing the OPC server object..." << std::endl;
 	pIOPCServer->Release();
 
 	//close the COM library:
-	std::cout << "Releasing the COM environment...\n" << std::endl;
+	std::cout << "Releasing the COM environment..." << std::endl;
 	CoUninitialize();
 }
 
@@ -45,17 +46,15 @@ void Opcclass::AddGroup()
 	AddTheGroup(pIOPCServer, pIOPCItemMgt, hServerGroup);
 }
 
-void Opcclass::AddItem()
+void Opcclass::AddItem(wchar_t *endereco)
 {
 	// Add the OPC item. First we have to convert from wchar_t* to char*
 	// in order to print the item name in the console.
 
-    // Defining the items in the server, used a typecast to work properly
-    ITEM_ID=(wchar_t *)L"Saw-toothed Waves.Real4";
-
+ 
+    ITEM_ID=endereco;
     size_t m;
 	wcstombs_s(&m, buf, 100, ITEM_ID, _TRUNCATE);
 	printf("Adding the item %s to the group...\n", buf);
     AddTheItem(pIOPCItemMgt, hServerItem);
 }
-
