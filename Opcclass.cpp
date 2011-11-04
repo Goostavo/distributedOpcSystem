@@ -45,7 +45,7 @@ void Opcclass::Addgroup()
 	AddTheGroup(pIOPCServer, pIOPCItemMgt, hServerGroup);
 }
 
-void Opcclass:AddItem()
+void Opcclass::AddItem()
 {
 	// Add the OPC item. First we have to convert from wchar_t* to char*
 	// in order to print the item name in the console.
