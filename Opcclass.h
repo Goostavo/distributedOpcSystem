@@ -9,9 +9,16 @@
 // The public functions are based in objective of use instead of being
 // based in the main OPC COM functions.
 
+#ifndef _OPCCLASS_H
+#define _OPCCLASS_H
+
 class Opcclass
 {
 	public:
 			Opcclass();
 			~Opcclass();
+            void Opcclass::Addgroup();
+            void Opcclass::Additem();
 }
+
+#endif
