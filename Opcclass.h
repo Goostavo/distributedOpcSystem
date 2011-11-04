@@ -31,11 +31,12 @@ class Opcclass
 	public:
 			Opcclass();
 			~Opcclass();
-        private:
-                void Opcclass::Addgroup();
-                void Opcclass::Additem();
-        	IOPCServer* pIOPCServer;   //pointer to IOPServer interface
-	        IOPCItemMgt* pIOPCItemMgt; //pointer to IOPCItemMgt interface
+    private:
+            void Opcclass::Addgroup();
+            void Opcclass::Additem();
+
+    	    IOPCServer* pIOPCServer;   //pointer to IOPServer interface
+            IOPCItemMgt* pIOPCItemMgt; //pointer to IOPCItemMgt interface
 
 	        OPCHANDLE hServerGroup; // server handle to the group
 	        OPCHANDLE hServerItem;  // server handle to the item
