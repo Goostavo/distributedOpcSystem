@@ -9,8 +9,8 @@
 Opcclass::Opcclass()
 {
     //Initializing some variables
-    IOPCServer* pIOPCServer = NULL;   //pointer to IOPServer interface
-    IOPCItemMgt* pIOPCItemMgt = NULL; //pointer to IOPCItemMgt interface
+    pIOPCServer = NULL;   //pointer to IOPServer interface
+    pIOPCItemMgt = NULL;  //pointer to IOPCItemMgt interface
 
     // Have to be done before using microsoft COM library:
     std::cout << "Initializing the COM environment..." << std::endl;
@@ -45,10 +45,14 @@ void Opcclass::Addgroup()
 	AddTheGroup(pIOPCServer, pIOPCItemMgt, hServerGroup);
 }
 
-void Opcclass:AddItem()
+void Opcclass::Additem()
 {
 	// Add the OPC item. First we have to convert from wchar_t* to char*
 	// in order to print the item name in the console.
+
+    // Defining the items in the server
+    ITEM_ID=(wchar_t *)L"Saw-toothed Waves.Real4";
+
     size_t m;
 	wcstombs_s(&m, buf, 100, ITEM_ID, _TRUNCATE);
 	printf("Adding the item %s to the group...\n", buf);

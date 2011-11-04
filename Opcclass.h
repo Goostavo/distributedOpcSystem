@@ -40,6 +40,9 @@ class Opcclass
 
 	        OPCHANDLE hServerGroup; // server handle to the group
 	        OPCHANDLE hServerItem;  // server handle to the item
+
+            char buf[100];
+            wchar_t *ITEM_ID;
 };
 
 #endif
