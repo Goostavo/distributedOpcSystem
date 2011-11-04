@@ -23,15 +23,23 @@ using namespace std;
 
 #define OPC_SERVER_NAME L"Matrikon.OPC.Simulation.1"
 
+#ifndef _OPCCLASS_H
+#define _OPCCLASS_H
+
 class Opcclass
 {
 	public:
 			Opcclass();
 			~Opcclass();
-    private:
+        private:
+                void Opcclass::Addgroup();
+                void Opcclass::Additem();
         	IOPCServer* pIOPCServer;   //pointer to IOPServer interface
 	        IOPCItemMgt* pIOPCItemMgt; //pointer to IOPCItemMgt interface
 
 	        OPCHANDLE hServerGroup; // server handle to the group
 	        OPCHANDLE hServerItem;  // server handle to the item
 };
+
+#endif
+
