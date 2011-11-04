@@ -38,7 +38,6 @@ using namespace std;
 #define OPC_SERVER_NAME L"Matrikon.OPC.Simulation.1"
 #define VT VT_R4
 
-
 //#define REMOTE_SERVER_NAME L"your_path"
 
 // Global variables
@@ -52,7 +51,7 @@ wchar_t ITEM_ID[]=L"Saw-toothed Waves.Real4";
 //////////////////////////////////////////////////////////////////////
 // Read the value of an item on an OPC server. 
 //
-void main(void)
+void main2(void)
 {
 	IOPCServer* pIOPCServer = NULL;   //pointer to IOPServer interface
 	IOPCItemMgt* pIOPCItemMgt = NULL; //pointer to IOPCItemMgt interface

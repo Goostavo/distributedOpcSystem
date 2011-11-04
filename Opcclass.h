@@ -9,9 +9,29 @@
 // The public functions are based in objective of use instead of being
 // based in the main OPC COM functions.
 
+#include <iostream>
+
+using namespace std;
+
+#include "SimpleOPCClient/opcda.h"
+#include "SimpleOPCClient/opcerror.h"
+#include "SimpleOPCClient/SimpleOPCClient_v3.h"
+#include "SimpleOPCClient/SOCAdviseSink.h"
+#include "SimpleOPCClient/SOCDataCallback.h"
+#include "SimpleOPCClient/SOCWrapperFunctions.h"
+
+
+#define OPC_SERVER_NAME L"Matrikon.OPC.Simulation.1"
+
 class Opcclass
 {
 	public:
 			Opcclass();
 			~Opcclass();
-}
+    private:
+        	IOPCServer* pIOPCServer;   //pointer to IOPServer interface
+	        IOPCItemMgt* pIOPCItemMgt; //pointer to IOPCItemMgt interface
+
+	        OPCHANDLE hServerGroup; // server handle to the group
+	        OPCHANDLE hServerItem;  // server handle to the item
+};
