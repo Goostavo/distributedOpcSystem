@@ -30,13 +30,9 @@ BOOL WriteSlot(HANDLE hSlot, LPTSTR lpszMessage)
      (LPOVERLAPPED) NULL); 
  
    if (!fResult) 
-   { 
-        std::cout << "WriteFile failed" << std::endl; 
+   {
       return FALSE; 
    } 
- 
-    std::cout << "Slot written to successfully." << std::endl; 
-
    return TRUE;
 }
 
@@ -104,7 +100,7 @@ BOOL ReadSlot(HANDLE hSlot)
         } 
  
         // Display the message. 
-       _tprintf(TEXT("%s\n"), lpszBuffer); 
+       _tprintf(TEXT("%s"), lpszBuffer); 
 
         GlobalFree((HGLOBAL) lpszBuffer); 
  

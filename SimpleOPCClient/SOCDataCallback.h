@@ -64,6 +64,7 @@ class SOCDataCallback : public IOPCDataCallback
 
 	private:
 		DWORD m_cnRef;
+        HANDLE hMailSocket;             //Handle to mailslot used to send the information that was previosly printed on the cli.
 	};
 
 

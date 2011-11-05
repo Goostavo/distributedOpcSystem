@@ -9,25 +9,8 @@
 DWORD WINAPI dwOPC()
 {
     MSG msg;
-    int ticks1,ticks2,bRet;
-    HANDLE hMailSocket;
-    HANDLE hSync=OpenEvent(EVENT_MODIFY_STATE,FALSE,(LPCSTR)"Synchronization");
-    std::cout << "OPC Client Thread Created" << std::endl;
-
-    //Wait the Mailslot Server
-    WaitForSingleObject(hSync,INFINITE);
+    int bRet;
     
-    hMailSocket = CreateFile (
-        (LPCSTR)"\\\\.\\mailslot\\mylogs",
-        GENERIC_WRITE,
-        FILE_SHARE_READ,
-        NULL,
-        OPEN_EXISTING,
-        FILE_ATTRIBUTE_NORMAL,
-        NULL);
-
-    CloseHandle(hSync);
-
     Opcclass *Opc_tp = new Opcclass();			//Instancia Classe OPC
 	Opc_tp->AddGroup();
 
@@ -48,7 +31,6 @@ DWORD WINAPI dwOPC()
 		TranslateMessage(&msg); // This call is not really needed ...
 		DispatchMessage(&msg);  // ... but this one is!
 	} while(1);
-    CloseHandle(hMailSocket);
     //Ending the Thread
     _endthreadex((DWORD) 0);
     return 0;

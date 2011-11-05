@@ -10,17 +10,34 @@
 #include <stdio.h>
 #include "SOCDataCallback.h"
 #include "SOCWrapperFunctions.h"
+#include "../MailslotOperations.h"
 
 extern UINT OPC_DATA_TIME;
 
 //	Constructor.  Reference count is initialized to zero.
 SOCDataCallback::SOCDataCallback () : m_cnRef (0)
 	{
+    HANDLE hSync=OpenEvent(EVENT_MODIFY_STATE,FALSE,(LPCSTR)"Synchronization");
+
+    //Wait the Mailslot Server
+    WaitForSingleObject(hSync,INFINITE);
+    
+    hMailSocket = CreateFile (
+        (LPCSTR)"\\\\.\\mailslot\\mylogs",
+        GENERIC_WRITE,
+        FILE_SHARE_READ,
+        NULL,
+        OPEN_EXISTING,
+        FILE_ATTRIBUTE_NORMAL,
+        NULL);
+
+    CloseHandle(hSync);
 	}
 
 //	Destructor
 SOCDataCallback::~SOCDataCallback ()
 	{
+
 	}
 
 // IUnknown methods
@@ -127,12 +144,13 @@ HRESULT STDMETHODCALLTYPE SOCDataCallback::OnDataChange(
 		// a few OPC data types are supported.
 		status = VarToStr(pvValues[dwItem], buffer);
 		if (status){
-			printf("Data callback: Value = %s", buffer);
+            WriteSlot(hMailSocket,TEXT("Data callback: Value = "));
+            WriteSlot(hMailSocket,TEXT(buffer));
 			quality = pwQualities [dwItem] & OPC_QUALITY_MASK;
 			if (quality == OPC_QUALITY_GOOD)
-				printf(" Quality: good");
+				WriteSlot(hMailSocket,TEXT("\tQuality: good"));
 			else
-			    printf(" Quality: not good");
+			    WriteSlot(hMailSocket,TEXT("\tQuality: not good"));
 			// Code below extracted from the Microsoft KB:
 			//     http://support.microsoft.com/kb/188768
 			// Note that in order for it to work, the Visual Studio C++ must
@@ -145,9 +163,13 @@ HRESULT STDMETHODCALLTYPE SOCDataCallback::OnDataChange(
 			FileTimeToSystemTime(&lft, &st);
 			GetDateFormat(LOCALE_SYSTEM_DEFAULT, DATE_SHORTDATE, &st, NULL, szLocalDate, 255);
 			GetTimeFormat(LOCALE_SYSTEM_DEFAULT, 0, &st, NULL, szLocalTime, 255);
-			printf(" Time: %s %s\n", szLocalDate, szLocalTime);
+            WriteSlot(hMailSocket,TEXT("\tTime: "));
+            WriteSlot(hMailSocket,TEXT(szLocalDate));
+            WriteSlot(hMailSocket,TEXT(" "));
+            WriteSlot(hMailSocket,TEXT(szLocalTime));
+            WriteSlot(hMailSocket,TEXT("\n"));
 		}
-		else printf ("IOPCDataCallback: Unsupported item type\n");
+		else WriteSlot(hMailSocket,TEXT("IOPCDataCallback: Unsupported item type\n"));
 	}
 
 	// Return "success" code.  Note this does not mean that there were no 
