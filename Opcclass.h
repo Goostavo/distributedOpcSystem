@@ -16,8 +16,6 @@ using namespace std;
 #include "SimpleOPCClient/opcda.h"
 #include "SimpleOPCClient/opcerror.h"
 #include "SimpleOPCClient/SOCDataCallback.h"
-#include "SimpleOPCClient/SOCWrapperFunctions.h"
-
 
 //#define OPC_SERVER_NAME L"Matrikon.OPC.Simulation.1"
 

@@ -7,10 +7,9 @@
 // Luiz T. S. Mendes - DELT/UFMG - 13 Sept 2011
 //
 
-#include <stdio.h>
 #include "SOCDataCallback.h"
-#include "SOCWrapperFunctions.h"
 #include "../MailslotOperations.h"
+#include "../SimpleOPCFunctions.h"
 
 extern UINT OPC_DATA_TIME;
 

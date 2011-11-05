@@ -188,3 +188,89 @@ void RemoveGroup (IOPCServer* pIOPCServer, OPCHANDLE hServerGroup)
 		exit(0);
 	}
 }
+///////////////////////////////////////////////////////////////////////////////
+// Set up an asynchronous connection with the server by means of the OPC DA
+// 2.0 IConnectionPointContainer
+//
+void SetDataCallback(
+		IUnknown* pGroupIUnknown,
+		IOPCDataCallback* pSOCDataCallback,
+		IConnectionPoint* &pIConnectionPoint,
+		DWORD *pdwCookie)
+{
+	HRESULT hr;
+
+	IConnectionPointContainer* pIConnPtCont = NULL; //pointer to IConnectionPointContainer
+	                                                //interface
+        
+	//Get a pointer to the IConnectionPointContainer interface:
+    hr = pGroupIUnknown->QueryInterface(__uuidof(pIConnPtCont), (void**) &pIConnPtCont);
+	if (hr != S_OK){
+		printf ("Could not obtain a pointer to IConnectionPointContainer. Error = %x\n",
+			    hr);
+		return;
+	}
+	
+	// Call the IConnectionPointContainer::FindConnectionPoint method on the
+	// group object to obtain a Connection Point
+	hr = pIConnPtCont->FindConnectionPoint(IID_IOPCDataCallback, &pIConnectionPoint);
+	if (hr != S_OK) {
+		printf ("Failed call to FindConnectionPoint. Error = %x\n", hr);
+		//*ptkAsyncConnection = 0;
+		return;
+	}
+
+	// Now set up the Connection Point.
+	// TO BE DONE: in Kepware´s code the IOPCDataCallback object is instantiated
+	// here, as a consequence of the FindConnectionPoint success. It makes sense,
+	// for if not we would have instantiated it unnecessarly.
+	hr = pIConnectionPoint->Advise(pSOCDataCallback, pdwCookie);
+	if (hr != S_OK) {
+		printf ("Failed call to IConnectionPoint::Advise. Error = %x\n", hr);
+		*pdwCookie = 0;
+	}
+
+	// From this point on we do not need anymore the pointer to the
+	// IConnectionPointContainer interface, so release it
+	pIConnPtCont->Release();
+
+	return;
+}
+
+/////////////////////////////////////////////////////////////////////////
+// Function to mimic the Delphi VARTOSTR procedure in which a VARIANT
+// is converted to a string. Only a few VARIANT types are supported in
+// this version.
+//
+// Luiz T. S. Mendes - 07/09/2011
+bool VarToStr (VARIANT pvar, char *buffer)
+{
+	bool vReturn = true;
+	switch (pvar.vt & ~VT_ARRAY)
+	{
+		case VT_BOOL:
+		case VT_I1:
+			sprintf(buffer, "%d",    pvar.iVal);	break;
+		case VT_I2:
+			sprintf(buffer, "%d",    pvar.intVal);	break;
+		case VT_I4:
+			sprintf(buffer, "%ld",   pvar.intVal);	break;
+		case VT_UI1:
+			sprintf(buffer, "%u",    pvar.uiVal);	break;
+		case VT_UI2:
+			sprintf(buffer, "%u",    pvar.ulVal);	break;
+		case VT_UI4:
+			sprintf(buffer, "%lu",   pvar.ulVal);	break;
+		case VT_R4:
+			sprintf(buffer, "%6.2f", pvar.fltVal);	break;
+		case VT_R8:
+			sprintf(buffer, "%lu",   pvar.dblVal);	break;
+		case VT_BSTR:
+			sprintf(buffer, "%s",    pvar.bstrVal);	break;
+		default:
+			sprintf(buffer, "%s", NULL);
+			vReturn = false;
+			break;
+	}
+	return(vReturn);
+}
