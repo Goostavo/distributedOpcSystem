@@ -11,6 +11,8 @@ Opcclass::Opcclass()
     //Initializing some variables
     pIOPCServer = NULL;   //pointer to IOPServer interface
     pIOPCItemMgt = NULL;  //pointer to IOPCItemMgt interface
+    pIConnectionPoint = NULL; //pointer to IConnectionPoint Interface
+    pSOCDataCallback = NULL; //Pointer to datacallback class
     nItens = 0;
 
     // Have to be done before using microsoft COM library:
@@ -25,10 +27,16 @@ Opcclass::Opcclass()
 //Object Destructor
 //This destructor will be responsible to run the last two steps when we're
 //programming at COM enviroment.
-// 1- Remove the pointer to OPC Server
-// 2- Close COM Enviroment.
+// 1- Close Data Subscription Objects
+// 2- Remove the pointer to OPC Server
+// 3- Close COM Enviroment.
 Opcclass::~Opcclass()
 {
+    // Cancel the callback and release its reference
+    if (pIConnectionPoint != NULL)
+        pIConnectionPoint->Release();    if (pSOCDataCallback != NULL)
+	    pSOCDataCallback->Release();
+
     // release the interface references:
 	std::cout << "Removing the OPC server object..." << std::endl;
 	pIOPCServer->Release();
@@ -55,4 +63,17 @@ void Opcclass::AddItem(wchar_t *item_id)
 	wcstombs_s(&m, buf, 100, item_id, _TRUNCATE);
 	printf("Adding the item %s to the group...\n", buf);
     AddTheItem(pIOPCItemMgt, hServerItem, item_id);
+}
+
+void Opcclass::ConfigCallback(void)
+{
+    // Establish a callback asynchronous read by means of the IOPCDaraCallback
+	// (OPC DA 2.0) method. We first instantiate a new SOCDataCallback object and
+	// adjusts its reference count, and then call a wrapper function to
+	// setup the callback.
+	DWORD dwCookie = 0;
+	pSOCDataCallback = new SOCDataCallback();
+	pSOCDataCallback->AddRef();
+	//printf("Setting up the IConnectionPoint callback connection...\n");
+	SetDataCallback(pIOPCItemMgt, pSOCDataCallback, pIConnectionPoint, &dwCookie);
 }

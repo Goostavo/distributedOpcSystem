@@ -33,12 +33,15 @@ class Opcclass
             
             void Opcclass::AddGroup();
             void Opcclass::AddItem(wchar_t *endereco);
+            void Opcclass::ConfigCallback();
 
     private:
 
 
     	    IOPCServer* pIOPCServer;   //pointer to IOPServer interface
             IOPCItemMgt* pIOPCItemMgt; //pointer to IOPCItemMgt interface
+            IConnectionPoint* pIConnectionPoint; //pointer to IConnectionPoint Interface
+            SOCDataCallback* pSOCDataCallback;
 
 	        OPCHANDLE hServerGroup; // server handle to the group
 	        OPCHANDLE hServerItem;  // server handle to the item
