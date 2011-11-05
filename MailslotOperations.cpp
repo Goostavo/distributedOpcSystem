@@ -100,8 +100,7 @@ BOOL ReadSlot(HANDLE hSlot)
         } 
  
         // Display the message. 
-       //_tprintf(TEXT("%s"), lpszBuffer); 
-       std::cout << lpszBuffer << std::endl;
+        std::cout << lpszBuffer;
 
         GlobalFree((HGLOBAL) lpszBuffer); 
  
