@@ -46,15 +46,13 @@ void Opcclass::AddGroup()
 	AddTheGroup(pIOPCServer, pIOPCItemMgt, hServerGroup);
 }
 
-void Opcclass::AddItem(wchar_t *endereco)
+void Opcclass::AddItem(wchar_t *item_id)
 {
 	// Add the OPC item. First we have to convert from wchar_t* to char*
 	// in order to print the item name in the console.
 
- 
-    ITEM_ID=endereco;
     size_t m;
-	wcstombs_s(&m, buf, 100, ITEM_ID, _TRUNCATE);
+	wcstombs_s(&m, buf, 100, item_id, _TRUNCATE);
 	printf("Adding the item %s to the group...\n", buf);
-    AddTheItem(pIOPCItemMgt, hServerItem);
+    AddTheItem(pIOPCItemMgt, hServerItem, item_id);
 }

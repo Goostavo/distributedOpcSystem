@@ -1,5 +1,10 @@
 #include "SimpleOPCFunctions.h"
 
+//Global Variables
+// The OPC DA Spec requires that some constants be registered in order to use
+// them. The one below refers to the OPC DA 1.0 IDataObject interface.
+UINT OPC_DATA_TIME = RegisterClipboardFormat (_T("OPCSTMFORMATDATATIME"));
+
 ////////////////////////////////////////////////////////////////////
 // Instantiate the IOPCServer interface of the OPCServer
 // having the name ServerName. Return a pointer to this interface
@@ -74,7 +79,7 @@ void AddTheGroup(IOPCServer* pIOPCServer, IOPCItemMgt* &pIOPCItemMgt,
 // is pointed by pIOPCItemMgt pointer. Return a server opc handle
 // to the item.
  
-void AddTheItem(IOPCItemMgt* pIOPCItemMgt, OPCHANDLE& hServerItem)
+void AddTheItem(IOPCItemMgt* pIOPCItemMgt, OPCHANDLE& hServerItem,wchar_t *item_id)
 {
 	HRESULT hr;
 
@@ -82,7 +87,7 @@ void AddTheItem(IOPCItemMgt* pIOPCItemMgt, OPCHANDLE& hServerItem)
 	OPCITEMDEF ItemArray[1] =
 	{{
 	/*szAccessPath*/ L"",
-	/*szItemID*/ ITEM_ID,
+	/*szItemID*/ item_id,
 	/*bActive*/ TRUE,
 	/*hClient*/ 1,
 	/*dwBlobSize*/ 0,
@@ -182,4 +187,38 @@ void RemoveGroup (IOPCServer* pIOPCServer, OPCHANDLE hServerGroup)
 		else printf ("Failed to remove OPC group. Error code = %x\n", hr);
 		exit(0);
 	}
+}
+
+// Set the group active flag state
+void SetGroupAF(IUnknown* pGroupIUnknown, BOOL ActiveFlag)
+{
+	HRESULT hr;
+	IOPCGroupStateMgt* pIOPCGroupStateMgt;
+	DWORD RevisedUpdateRate;
+
+	// Get a pointer to the IOPCGroupStateMgt interface:
+    hr = pGroupIUnknown->QueryInterface(__uuidof(pIOPCGroupStateMgt),
+		                               (void**) &pIOPCGroupStateMgt);
+	if (hr != S_OK){
+		printf ("Could not obtain a pointer to IOPCGroupStateMgt. Error = %x\n", hr);
+		return;
+	}
+	// Set the state to Active. Since the other group properties are to remain
+	// unchanged we pass NULL pointers to them as suggested by the OPC DA Spec.
+	hr = pIOPCGroupStateMgt->SetState(
+		    NULL,                // *pRequestedUpdateRate
+			&RevisedUpdateRate,  // *pRevisedUpdateRate - can´t be NULL
+			&ActiveFlag,		 // *pActive
+			NULL,				 // *pTimeBias
+			NULL,				 // *pPercentDeadband
+			NULL,				 // *pLCID
+			NULL);				 // *phClientGroup
+                     
+	if (hr != S_OK)
+		printf ("Failed call to IOPCGroupMgt::SetState. Error = %x\n", hr);
+	else
+		// Free the pointer since we will not use it anymore.
+		pIOPCGroupStateMgt->Release();
+
+	return; 
 }

@@ -15,13 +15,12 @@ using namespace std;
 
 #include "SimpleOPCClient/opcda.h"
 #include "SimpleOPCClient/opcerror.h"
-#include "SimpleOPCClient/SimpleOPCClient_v3.h"
 #include "SimpleOPCClient/SOCAdviseSink.h"
 #include "SimpleOPCClient/SOCDataCallback.h"
 #include "SimpleOPCClient/SOCWrapperFunctions.h"
 
 
-#define OPC_SERVER_NAME L"Matrikon.OPC.Simulation.1"
+//#define OPC_SERVER_NAME L"Matrikon.OPC.Simulation.1"
 
 #ifndef _OPCCLASS_H
 #define _OPCCLASS_H
