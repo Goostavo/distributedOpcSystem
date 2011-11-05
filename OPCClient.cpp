@@ -83,19 +83,22 @@ DWORD WINAPI dwOPC()
 DWORD WINAPI dwCommunication (LPVOID opc)
 
 {
-    /*HANDLE hMailslotOPC = CreateMailslot(
+    HANDLE hMailslotOPC = CreateMailslot(
         (LPCSTR)"\\\\.\\mailslot\\OPCTCP",
         0,
         MAILSLOT_WAIT_FOREVER,
         NULL);
     HANDLE hSyncOPC=OpenEvent(EVENT_MODIFY_STATE,FALSE,(LPCSTR)"SyncOPCTCP");
     SetEvent(hSyncOPC);
+    char aux[1024]="";
     while (true)
     {
-        ReadSlot(hMailslotOPC);
+        ReadSlot(hMailslotOPC, (char *)&aux);
+        std::cout << aux << std::endl;
+        Sleep(2000);
     }
 
-    CloseHandle (hMailslotOPC);*/
+    CloseHandle (hMailslotOPC);
 
     int debug_aux = 0;
     Opcclass *Opc_send = new Opcclass();			//Instantiate OPC Class

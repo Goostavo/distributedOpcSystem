@@ -37,7 +37,7 @@ BOOL WriteSlot(HANDLE hSlot, LPTSTR lpszMessage)
 }
 
 
-BOOL ReadSlot(HANDLE hSlot) 
+BOOL ReadSlot(HANDLE hSlot, char* message) 
 { 
     DWORD cbMessage, cMessage, cbRead; 
     BOOL fResult; 
@@ -99,8 +99,10 @@ BOOL ReadSlot(HANDLE hSlot)
             return FALSE; 
         } 
  
-        // Display the message. 
-        std::cout << lpszBuffer;
+        // Write the message. 
+        
+        strcpy_s(message, 1024, lpszBuffer);
+        //std::cout << message << std::endl;
 
         GlobalFree((HGLOBAL) lpszBuffer); 
  
