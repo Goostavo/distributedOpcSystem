@@ -5,9 +5,20 @@
 #include "MailslotOperations.h"
 
 #define SIZE  55
-
+#define ERROR "999999,999999,9999.9,9999.9,999999,999999,999999,999999"
 DWORD WINAPI dwSocket()
 {
+    Sleep(1000);
+
+    HANDLE hMailslotSocket= CreateFile (
+        (LPCSTR)"\\\\.\\mailslot\\OPCTCP",
+        GENERIC_WRITE,
+        FILE_SHARE_READ,
+        NULL,
+        OPEN_EXISTING,
+        FILE_ATTRIBUTE_NORMAL,
+        NULL);
+    
     WSADATA wsaData;
     SOCKET s;
     SOCKADDR_IN ServerAddr;
@@ -16,7 +27,7 @@ DWORD WINAPI dwSocket()
     int port, status;
 
     ipaddr = "192.168.0.101";
-    port = 6000;
+    port = 6001;
 
     while (true)
     {
@@ -24,7 +35,8 @@ DWORD WINAPI dwSocket()
         //Winsock 2.2 Startup
         status = WSAStartup(MAKEWORD(2,2), &wsaData);
         if (status != 0) {
-            strncpy_s(message, SIZE, "Winsock 2 Startup Error.", status);
+            //"Winsock 2 Startup Error."
+            strncpy_s(message, SIZE, ERROR, status);
 	        WSACleanup();
         }
 
@@ -33,9 +45,11 @@ DWORD WINAPI dwSocket()
         if (s == INVALID_SOCKET){
             status=WSAGetLastError();
 	        if (status == WSAENETDOWN)
-                strncpy_s(message, SIZE+1, "Network or server sockets inaccessible.", status);
+                //"Network or server sockets inaccessible."
+                strncpy_s(message, SIZE+1, ERROR, status);
 	        else
-                strncpy_s(message, SIZE+1, "Network Error.", status);
+                //"Network Error."
+                strncpy_s(message, SIZE+1, ERROR, status);
 	        WSACleanup();
         }
 
@@ -47,7 +61,8 @@ DWORD WINAPI dwSocket()
         //Server Conection
         status = connect(s, (SOCKADDR *) &ServerAddr, sizeof(ServerAddr));
         if (status == SOCKET_ERROR){
-	        strncpy_s(message, SIZE+1, "Error: Connection not established.", status);
+            //"Error: Connection not established."
+	        strncpy_s(message, SIZE+1, ERROR, status);
             closesocket(s);
 	        WSACleanup();
         }
@@ -60,11 +75,12 @@ DWORD WINAPI dwSocket()
             WSACleanup();    
   	    }
         else if (status !=0) {
-            strncpy_s(message, SIZE+1, "Receiving Error.", status);
+            //"Receiving Error."
+            strncpy_s(message, SIZE+1, ERROR, status);
             closesocket(s);
             WSACleanup();
         }
-        std::cout << message << std::endl;
+        WriteSlot(hMailslotSocket, (LPTSTR) message);
         Sleep(1000);
     }
     _endthreadex((DWORD) 0);
