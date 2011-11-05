@@ -65,10 +65,10 @@
     <ClCompile Include="Opcclass.cpp" />
     <ClCompile Include="OPCClient.cpp" />
     <ClCompile Include="SimpleOPCClient\opcda_i.c" />
-    <ClCompile Include="SimpleOPCClient\SimpleOPCClient_v3.cpp" />
     <ClCompile Include="SimpleOPCClient\SOCAdviseSink.cpp" />
     <ClCompile Include="SimpleOPCClient\SOCDataCallback.cpp" />
     <ClCompile Include="SimpleOPCClient\SOCWrapperlFunctions.cpp" />
+    <ClCompile Include="SimpleOPCFunctions.cpp" />
     <ClCompile Include="SocketClient.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -77,10 +77,10 @@
     <ClInclude Include="OPCClient.h" />
     <ClInclude Include="SimpleOPCClient\opcda.h" />
     <ClInclude Include="SimpleOPCClient\opcerror.h" />
-    <ClInclude Include="SimpleOPCClient\SimpleOPCClient_v3.h" />
     <ClInclude Include="SimpleOPCClient\SOCAdviseSink.h" />
     <ClInclude Include="SimpleOPCClient\SOCDataCallback.h" />
     <ClInclude Include="SimpleOPCClient\SOCWrapperFunctions.h" />
+    <ClInclude Include="SimpleOPCFunctions.h" />
     <ClInclude Include="SocketClient.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

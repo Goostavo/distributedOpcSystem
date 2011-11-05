@@ -1,6 +1,6 @@
 //Trabalho Prático de Sistemas Distribuídos Para Automação 2011/02
-//Gustavo Barreto Garcia		2006048133
-//Rafael Gilmar Ribeiro Gurgel	2006048192
+//Gustavo Barreto Garcia        2006048133
+//Rafael Gilmar Ribeiro Gurgel  2006048192
 //main.c
 
 #include <iostream>
@@ -26,7 +26,7 @@ HANDLE hSync;   //To notify when mailslot client will be ready
 
 int main (void)
 {
-	std::cout << "Hello World!" << std::endl;
+    std::cout << "Hello World!" << std::endl;
     DWORD dwThreadID;   //Where the Thread ID will be deposited when created a Thread
     string log;
 
@@ -48,7 +48,6 @@ int main (void)
         L"OPCClient",
         0,
         (CAST_LPDWORD)&dwThreadID);
-
     //Now the data capture program will start here:
     //...
     //...
