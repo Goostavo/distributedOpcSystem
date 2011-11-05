@@ -15,7 +15,6 @@ using namespace std;
 
 #include "SimpleOPCClient/opcda.h"
 #include "SimpleOPCClient/opcerror.h"
-#include "SimpleOPCClient/SOCAdviseSink.h"
 #include "SimpleOPCClient/SOCDataCallback.h"
 #include "SimpleOPCClient/SOCWrapperFunctions.h"
 
@@ -34,9 +33,11 @@ class Opcclass
             void Opcclass::AddGroup();
             void Opcclass::AddItem(wchar_t *endereco);
             void Opcclass::ConfigCallback();
+            void Opcclass::ActivatePulling();
+            void Opcclass::DeactivatePulling();
 
     private:
-
+            void Opcclass::SetGroupAF(IUnknown* pGroupIUnknown, BOOL ActiveFlag);
 
     	    IOPCServer* pIOPCServer;   //pointer to IOPServer interface
             IOPCItemMgt* pIOPCItemMgt; //pointer to IOPCItemMgt interface

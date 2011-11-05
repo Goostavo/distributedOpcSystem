@@ -34,7 +34,8 @@ Opcclass::~Opcclass()
 {
     // Cancel the callback and release its reference
     if (pIConnectionPoint != NULL)
-        pIConnectionPoint->Release();    if (pSOCDataCallback != NULL)
+        pIConnectionPoint->Release();
+    if (pSOCDataCallback != NULL)
 	    pSOCDataCallback->Release();
 
     // release the interface references:
@@ -73,7 +74,54 @@ void Opcclass::ConfigCallback(void)
 	// setup the callback.
 	DWORD dwCookie = 0;
 	pSOCDataCallback = new SOCDataCallback();
-	pSOCDataCallback->AddRef();
+	pSOCDataCallback->AddRef();
+
 	//printf("Setting up the IConnectionPoint callback connection...\n");
 	SetDataCallback(pIOPCItemMgt, pSOCDataCallback, pIConnectionPoint, &dwCookie);
+}
+
+// Set the group active flag state
+void Opcclass::SetGroupAF(IUnknown* pGroupIUnknown, BOOL ActiveFlag)
+{
+	HRESULT hr;
+	IOPCGroupStateMgt* pIOPCGroupStateMgt;
+	DWORD RevisedUpdateRate;
+
+	// Get a pointer to the IOPCGroupStateMgt interface:
+    hr = pGroupIUnknown->QueryInterface(__uuidof(pIOPCGroupStateMgt),
+		                               (void**) &pIOPCGroupStateMgt);
+	if (hr != S_OK){
+		printf ("Could not obtain a pointer to IOPCGroupStateMgt. Error = %x\n", hr);
+		return;
+	}
+	// Set the state to Active. Since the other group properties are to remain
+	// unchanged we pass NULL pointers to them as suggested by the OPC DA Spec.
+	hr = pIOPCGroupStateMgt->SetState(
+		    NULL,                // *pRequestedUpdateRate
+			&RevisedUpdateRate,  // *pRevisedUpdateRate - can´t be NULL
+			&ActiveFlag,		 // *pActive
+			NULL,				 // *pTimeBias
+			NULL,				 // *pPercentDeadband
+			NULL,				 // *pLCID
+			NULL);				 // *phClientGroup
+                     
+	if (hr != S_OK)
+		printf ("Failed call to IOPCGroupMgt::SetState. Error = %x\n", hr);
+	else
+		// Free the pointer since we will not use it anymore.
+		pIOPCGroupStateMgt->Release();
+
+	return; 
+}
+
+//
+void Opcclass::ActivatePulling(void)
+{
+    Opcclass::SetGroupAF(pIOPCItemMgt,1);
+}
+
+//
+void Opcclass::DeactivatePulling(void)
+{
+    Opcclass::SetGroupAF(pIOPCItemMgt,0);
 }

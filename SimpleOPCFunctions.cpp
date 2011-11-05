@@ -188,37 +188,3 @@ void RemoveGroup (IOPCServer* pIOPCServer, OPCHANDLE hServerGroup)
 		exit(0);
 	}
 }
-
-// Set the group active flag state
-void SetGroupAF(IUnknown* pGroupIUnknown, BOOL ActiveFlag)
-{
-	HRESULT hr;
-	IOPCGroupStateMgt* pIOPCGroupStateMgt;
-	DWORD RevisedUpdateRate;
-
-	// Get a pointer to the IOPCGroupStateMgt interface:
-    hr = pGroupIUnknown->QueryInterface(__uuidof(pIOPCGroupStateMgt),
-		                               (void**) &pIOPCGroupStateMgt);
-	if (hr != S_OK){
-		printf ("Could not obtain a pointer to IOPCGroupStateMgt. Error = %x\n", hr);
-		return;
-	}
-	// Set the state to Active. Since the other group properties are to remain
-	// unchanged we pass NULL pointers to them as suggested by the OPC DA Spec.
-	hr = pIOPCGroupStateMgt->SetState(
-		    NULL,                // *pRequestedUpdateRate
-			&RevisedUpdateRate,  // *pRevisedUpdateRate - can´t be NULL
-			&ActiveFlag,		 // *pActive
-			NULL,				 // *pTimeBias
-			NULL,				 // *pPercentDeadband
-			NULL,				 // *pLCID
-			NULL);				 // *phClientGroup
-                     
-	if (hr != S_OK)
-		printf ("Failed call to IOPCGroupMgt::SetState. Error = %x\n", hr);
-	else
-		// Free the pointer since we will not use it anymore.
-		pIOPCGroupStateMgt->Release();
-
-	return; 
-}

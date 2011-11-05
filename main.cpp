@@ -62,13 +62,14 @@ int main (void)
         std::cout << "Create Mailslot failed" << std::endl;
     else
         SetEvent(hSync);
-    while (true)
-    {
-       ReadSlot(hMailslot);
-       Sleep(100);
-    }
+    //while (true)
+    //{
+       //ReadSlot(hMailslot);
+       //Sleep(100);
+    //}
 
 
+	while (1);
 
     //...
     //...
