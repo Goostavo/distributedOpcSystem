@@ -18,5 +18,5 @@
 #include "Opcclass.h"
 
 BOOL WriteSlot(HANDLE hSlot, LPTSTR lpszMessage);
-BOOL ReadSlot(HANDLE hSlot);
+BOOL ReadSlot(HANDLE hSlot, char *message);
 void parseAndSend(char* information, Opcclass *OpcSd);
