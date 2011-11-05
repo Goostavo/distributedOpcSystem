@@ -83,6 +83,8 @@ DWORD WINAPI dwOPC()
 DWORD WINAPI dwCommunication (LPVOID opc)
 
 {
+    char bigBuffer[1024];
+    //Set Mailslot
     HANDLE hMailslotOPC = CreateMailslot(
         (LPCSTR)"\\\\.\\mailslot\\OPCTCP",
         0,
@@ -90,17 +92,8 @@ DWORD WINAPI dwCommunication (LPVOID opc)
         NULL);
     HANDLE hSyncOPC=OpenEvent(EVENT_MODIFY_STATE,FALSE,(LPCSTR)"SyncOPCTCP");
     SetEvent(hSyncOPC);
-    char aux[1024]="";
-    while (true)
-    {
-        ReadSlot(hMailslotOPC, (char *)&aux);
-        std::cout << aux << std::endl;
-        Sleep(2000);
-    }
 
-    CloseHandle (hMailslotOPC);
-
-    int debug_aux = 0;
+    //Set a basic config to be able to write an opc item
     Opcclass *Opc_send = new Opcclass();			//Instantiate OPC Class
 	Opc_send->AddGroup();                         //Add the main group
 
@@ -114,12 +107,13 @@ DWORD WINAPI dwCommunication (LPVOID opc)
     Opc_send->AddItem((wchar_t *)L"Bucket Brigade.UInt2");
     Opc_send->AddItem((wchar_t *)L"Bucket Brigade.UInt4");
 
-    while (1)
+    while (true)
     {
-        //Opc_send->WriteItem(8, &debug_aux, VT_I2);    //Write a Item syncronously
-        //debug_aux++;
-        Sleep(1000);
+        ReadSlot(hMailslotOPC, bigBuffer);
+        parseAndSend(bigBuffer,Opc_send);
     }
+
+    CloseHandle (hMailslotOPC);
 
     _endthreadex((DWORD) 0);
     return 0;

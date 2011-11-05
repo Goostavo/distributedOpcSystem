@@ -152,7 +152,12 @@ void parseAndSend(char* information, Opcclass *OpcSd)
     {
         tempBuff[aux]=information[aux+index];
     }
-    sscanf(tempBuff, "%f", &tempFloat);
+        //Set max and min values
+    if (tempValue > 32767)
+        tempValue = 32767;
+    else if (tempValue < -32768)
+        tempValue = -32768;
+    sscanf(tempBuff, "%d", &tempValue);
     OpcSd->WriteItem(2,&tempValue,VT_I2);
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -162,9 +167,9 @@ void parseAndSend(char* information, Opcclass *OpcSd)
     {
         tempBuff[aux]=information[aux+index];
     }
-    sscanf(tempBuff, "%i", &tempFloat);
+    sscanf(tempBuff, "%f", &tempFloat);
     //Set max and min values
-    OpcSd->WriteItem(3,&tempValue,VT_R4);
+    OpcSd->WriteItem(3,&tempFloat,VT_R4);
 
     ////////////////////////////////////////////////////////////////////////////////
     //Send the VT_R8 data
@@ -173,9 +178,9 @@ void parseAndSend(char* information, Opcclass *OpcSd)
     {
         tempBuff[aux]=information[aux+index];
     }
-    sscanf(tempBuff, "%i", &tempFloat);
+    sscanf(tempBuff, "%f", &tempDouble);
     //Set max and min values
-    OpcSd->WriteItem(4,&tempValue,VT_R8);
+    OpcSd->WriteItem(4,&tempDouble,VT_R8);
 
     ////////////////////////////////////////////////////////////////////////////////
     //Send the VT_I4 data
@@ -199,13 +204,13 @@ void parseAndSend(char* information, Opcclass *OpcSd)
     {
         tempBuff[aux]=information[aux+index];
     }
-    sscanf(tempBuff, "%d", &tempValue);
+    sscanf(tempBuff, "%d", &tempUValue);
     //Set max and min values
-    if (tempValue > 256)
-        tempValue = 256;
-    else if (tempValue < 0)
-        tempValue = 0;
-    OpcSd->WriteItem(6,&tempValue,VT_UI1);
+    if (tempUValue > 256)
+        tempUValue = 256;
+    else if (tempUValue < 0)
+        tempUValue = 0;
+    OpcSd->WriteItem(6,&tempUValue,VT_UI1);
 
     ////////////////////////////////////////////////////////////////////////////////
     //Send the VT_UI2 data
@@ -214,13 +219,13 @@ void parseAndSend(char* information, Opcclass *OpcSd)
     {
         tempBuff[aux]=information[aux+index];
     }
-    sscanf(tempBuff, "%d", &tempValue);
+    sscanf(tempBuff, "%d", &tempUValue);
     //Set max and min values
-    if (tempValue > 65535)
-        tempValue = 65535;
-    else if (tempValue < 0)
-        tempValue = 0;
-    OpcSd->WriteItem(7,&tempValue,VT_UI2);
+    if (tempUValue > 65535)
+        tempUValue = 65535;
+    else if (tempUValue < 0)
+        tempUValue = 0;
+    OpcSd->WriteItem(7,&tempUValue,VT_UI2);
 
     ////////////////////////////////////////////////////////////////////////////////
     //Send the VT_UI4 data
@@ -231,9 +236,9 @@ void parseAndSend(char* information, Opcclass *OpcSd)
     }
     sscanf(tempBuff, "%d", &tempUValue);
     //Set max and min values
-    if (tempValue > 4294967295)
-        tempValue = 4294967295;
-    else if (tempValue < 0)
-        tempValue = 0;
-    OpcSd->WriteItem(8,&tempValue,VT_UI2);
+    if (tempUValue > 4294967295)
+        tempUValue = 4294967295;
+    else if (tempUValue < 0)
+        tempUValue = 0;
+    OpcSd->WriteItem(8,&tempUValue,VT_UI4);
 }

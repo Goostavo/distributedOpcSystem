@@ -28,6 +28,7 @@ int main (void)
 {
     DWORD dwThreadID;   //Where the Thread ID will be deposited when created a Thread
     string log;
+    char bigBuffer[1024];
 
     //MailSlot Sync event
     hSync = CreateEvent(NULL,TRUE,FALSE, (LPCSTR)"Synchronization");
@@ -64,8 +65,9 @@ int main (void)
     //Read Messages sent by the OPC Client thread.
     while (true)
     {
-       ReadSlot(hMailslot);
+       ReadSlot(hMailslot,bigBuffer);
        Sleep(100);
+       cout<<bigBuffer<<endl;
     }
 
     //Wait for the Threads
