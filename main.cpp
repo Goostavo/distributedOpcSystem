@@ -26,13 +26,14 @@ HANDLE hSync;   //To notify when mailslot client will be ready
 
 int main (void)
 {
-    std::cout << "Hello World!" << std::endl;
     DWORD dwThreadID;   //Where the Thread ID will be deposited when created a Thread
     string log;
 
-    hSync =OpenEvent(EVENT_MODIFY_STATE, FALSE, (LPCSTR)"Synchronization");
+    //MailSlot Sync event
+    hSync = OpenEvent(EVENT_MODIFY_STATE, FALSE, (LPCSTR)"Synchronization");
 
     //Creating Threads
+    //Create the Socket Thread, it creates thread to handle the TCP connection.
     hSocket = (HANDLE) _beginthreadex(
         NULL,
         0,
@@ -41,6 +42,7 @@ int main (void)
         0,
         (CAST_LPDWORD)&dwThreadID);
 
+    //Create the OPC client thread, it handles the communication with the OPC server.
     hOPC = (HANDLE) _beginthreadex(
         NULL,
         0,
@@ -48,10 +50,6 @@ int main (void)
         L"OPCClient",
         0,
         (CAST_LPDWORD)&dwThreadID);
-    //Now the data capture program will start here:
-    //...
-    //...
-    //...
     //Creating the Mailslot Server
     hMailslot = CreateMailslot(
         (LPCSTR)"\\\\.\\mailslot\\mylogs",
@@ -62,17 +60,13 @@ int main (void)
         std::cout << "Create Mailslot failed" << std::endl;
     else
         SetEvent(hSync);
+
+    //Read Messages sent by the OPC Client thread.
     while (true)
     {
        ReadSlot(hMailslot);
        Sleep(100);
     }
-
-    //...
-    //...
-    //...
-    //Finish capture program code
-
 
     //Wait for the Threads
     WaitForSingleObject(hSocket, INFINITE);
@@ -83,15 +77,6 @@ int main (void)
     CloseHandle(hOPC);
     CloseHandle(hMailslot);
 
-    /*  COLOCAR EM SEU DEVIDO LUGAR
-	Opcclass *Opc_tp = new Opcclass();			//Instancia Classe OPC
-	Opc_tp->AddGroup();
-
-    Opc_tp->AddItem((wchar_t *)L"Random.Boolean");
-    Opc_tp->AddItem((wchar_t *)L"Random.Int1");
-    Opc_tp->AddItem((wchar_t *)L"Random.Int2");
-    Opc_tp->AddItem((wchar_t *)L"Random.Real4");
-   */
 	system("pause");
 	return 0;
 }
