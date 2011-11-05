@@ -70,6 +70,19 @@ DWORD WINAPI dwOPC()
 DWORD WINAPI dwCommunication (LPVOID opc)
 
 {
+    HANDLE hMailslotOPC = CreateMailslot(
+        (LPCSTR)"\\\\.\\mailslot\\OPCTCP",
+        0,
+        MAILSLOT_WAIT_FOREVER,
+        NULL);
+    HANDLE hSyncOPC=OpenEvent(EVENT_MODIFY_STATE,FALSE,(LPCSTR)"SyncOPCTCP");
+    SetEvent(hSyncOPC);
+    while (true)
+    {
+        ReadSlot(hMailslotOPC);
+    }
+
+    CloseHandle (hMailslotOPC);
     _endthreadex((DWORD) 0);
     return 0;
 }

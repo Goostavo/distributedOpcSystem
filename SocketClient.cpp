@@ -13,7 +13,7 @@
 DWORD WINAPI dwSocket()
 {
     HANDLE hSync=OpenEvent(EVENT_MODIFY_STATE,FALSE,(LPCSTR)"Synchronization");
-    HANDLE hSyncOPC=OpenEvent(EVENT_MODIFY_STATE,FALSE,(LPCSTR)"SyncOPCTCP");
+    HANDLE hSyncOPC=CreateEvent(NULL,TRUE,FALSE,(LPCSTR)"SyncOPCTCP");
     HANDLE hMailslotLog;
     HANDLE hMailslotOPC;
     char msg[SIZE+1];
@@ -31,7 +31,6 @@ DWORD WINAPI dwSocket()
         NULL);
     
     WaitForSingleObject(hSyncOPC,INFINITE);
-    
     hMailslotOPC = CreateFile (
         (LPCSTR)"\\\\.\\mailslot\\OPCTCP",
         GENERIC_WRITE,
@@ -50,6 +49,7 @@ DWORD WINAPI dwSocket()
         }
 
         else {
+            std::cout << msg << std::endl;
             WriteSlot(hMailslotOPC, (LPTSTR)"999999,999999,9999.9,9999.9,999999,999999,999999,999999");
             WriteSlot(hMailslotLog,(LPTSTR)&msg);
         }

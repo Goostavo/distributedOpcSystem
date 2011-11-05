@@ -30,7 +30,7 @@ int main (void)
     string log;
 
     //MailSlot Sync event
-    hSync = OpenEvent(EVENT_MODIFY_STATE, FALSE, (LPCSTR)"Synchronization");
+    hSync = CreateEvent(NULL,TRUE,FALSE, (LPCSTR)"Synchronization");
 
     //Creating Threads
     //Create the Socket Thread, it creates thread to handle the TCP connection.
