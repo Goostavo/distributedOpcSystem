@@ -143,7 +143,10 @@ HRESULT STDMETHODCALLTYPE SOCDataCallback::OnDataChange(
 		// a few OPC data types are supported.
 		status = VarToStr(pvValues[dwItem], buffer);
 		if (status){
-            WriteSlot(hMailSocket,TEXT("Data callback: Value = "));
+            WriteSlot(hMailSocket,TEXT("DCB: Value = "));
+            WriteSlot(hMailSocket,TEXT(buffer));
+            _itoa((int)phClientItems[dwItem],buffer,10);
+            WriteSlot(hMailSocket,TEXT(" Id = "));
             WriteSlot(hMailSocket,TEXT(buffer));
 			quality = pwQualities [dwItem] & OPC_QUALITY_MASK;
 			if (quality == OPC_QUALITY_GOOD)

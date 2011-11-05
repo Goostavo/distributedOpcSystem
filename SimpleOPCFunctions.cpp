@@ -79,7 +79,7 @@ void AddTheGroup(IOPCServer* pIOPCServer, IOPCItemMgt* &pIOPCItemMgt,
 // is pointed by pIOPCItemMgt pointer. Return a server opc handle
 // to the item.
  
-void AddTheItem(IOPCItemMgt* pIOPCItemMgt, OPCHANDLE& hServerItem,wchar_t *item_id)
+void AddTheItem(IOPCItemMgt* pIOPCItemMgt, OPCHANDLE& hServerItem,wchar_t *item_id, OPCHANDLE hClientItem)
 {
 	HRESULT hr;
 
@@ -89,7 +89,7 @@ void AddTheItem(IOPCItemMgt* pIOPCItemMgt, OPCHANDLE& hServerItem,wchar_t *item_
 	/*szAccessPath*/ L"",
 	/*szItemID*/ item_id,
 	/*bActive*/ TRUE,
-	/*hClient*/ 1,
+	/*hClient*/ hClientItem,
 	/*dwBlobSize*/ 0,
 	/*pBlob*/ NULL,
 	/*vtRequestedDataType*/ VT,

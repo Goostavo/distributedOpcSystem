@@ -18,6 +18,14 @@ DWORD WINAPI dwOPC()
     Opc_tp->AddItem((wchar_t *)L"Random.Int1");
     Opc_tp->AddItem((wchar_t *)L"Random.Int2");
     Opc_tp->AddItem((wchar_t *)L"Random.Real4");
+    Opc_tp->AddItem((wchar_t *)L"Bucket Brigade.Int1");
+    Opc_tp->AddItem((wchar_t *)L"Bucket Brigade.Int2");
+    Opc_tp->AddItem((wchar_t *)L"Bucket Brigade.Real4");
+    Opc_tp->AddItem((wchar_t *)L"Bucket Brigade.Real8");
+    Opc_tp->AddItem((wchar_t *)L"Bucket Brigade.Int4");
+    Opc_tp->AddItem((wchar_t *)L"Bucket Brigade.UInt1");
+    Opc_tp->AddItem((wchar_t *)L"Bucket Brigade.UInt2");
+    Opc_tp->AddItem((wchar_t *)L"Bucket Brigade.UInt4");
 
     Opc_tp->ConfigCallback();
     Opc_tp->ActivatePulling();

@@ -1,5 +1,4 @@
 #include "Opcclass.h"
-#include "SimpleOPCFunctions.h"
 
 //Object Constructor
 //This constructor will be responsible to run some steps that have to be
@@ -61,9 +60,12 @@ void Opcclass::AddItem(wchar_t *item_id)
 	// in order to print the item name in the console.
 
     size_t m;
+    OPCHANDLE hServerItem;
 	wcstombs_s(&m, buf, 100, item_id, _TRUNCATE);
 	printf("Adding the item %s to the group...\n", buf);
-    AddTheItem(pIOPCItemMgt, hServerItem, item_id);
+    HServerItems_Vec.insert(HServerItems_Vec.end(),hServerItem);
+    HServerItems_Name.insert(HServerItems_Name.end(),item_id);
+    AddTheItem(pIOPCItemMgt, hServerItem, item_id, (OPCHANDLE)HServerItems_Vec.size());    
 }
 
 void Opcclass::ConfigCallback(void)

@@ -9,18 +9,15 @@
 // The public functions are based in objective of use instead of being
 // based in the main OPC COM functions.
 
-#include <iostream>
-
+#ifndef _OPCCLASS_H
+#define _OPCCLASS_H
 using namespace std;
 
+#include <vector>
 #include "SimpleOPCClient/opcda.h"
 #include "SimpleOPCClient/opcerror.h"
 #include "SimpleOPCClient/SOCDataCallback.h"
-
-//#define OPC_SERVER_NAME L"Matrikon.OPC.Simulation.1"
-
-#ifndef _OPCCLASS_H
-#define _OPCCLASS_H
+#include "SimpleOPCFunctions.h"
 
 class Opcclass
 {
@@ -43,8 +40,8 @@ class Opcclass
             SOCDataCallback* pSOCDataCallback;
 
 	        OPCHANDLE hServerGroup; // server handle to the group
-	        OPCHANDLE hServerItem;  // server handle to the item
-
+            vector<OPCHANDLE> HServerItems_Vec;   //Store the server handles to the item
+            vector<wchar_t*> HServerItems_Name;  //Store the client names to the item
             char buf[100];
             wchar_t *ITEM_ID;
             int nItens;
