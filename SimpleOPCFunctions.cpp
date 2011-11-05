@@ -274,3 +274,32 @@ bool VarToStr (VARIANT pvar, char *buffer)
 	}
 	return(vReturn);
 }
+
+//Generate a VARIANT type variable with the data sent and the type specified
+bool GenerateVar (VARIANT* pvar, VARTYPE var_type, void* var_value)
+{
+	bool vReturn = true;
+    pvar->vt = var_type;                //Assign var_type
+    //Typecast from void* to the specified type*, and them dereferenciate.
+	switch (var_type & ~VT_ARRAY)
+	{
+		case VT_BOOL:
+		case VT_I1:
+			pvar->iVal = *static_cast<char*>(var_value);	break;
+		case VT_I2:
+			pvar->intVal = *static_cast<short*>(var_value);	break;
+		case VT_I4:
+			pvar->intVal = *static_cast<long*>(var_value);	break;
+		case VT_UI1:
+			pvar->uiVal = *static_cast<unsigned char*>(var_value);	break;
+		case VT_UI2:
+			pvar->ulVal = *static_cast<unsigned short*>(var_value);	break;
+		case VT_UI4:
+			pvar->ulVal = *static_cast<unsigned long*>(var_value);	break;
+		case VT_R4:
+			pvar->fltVal = *static_cast<float*>(var_value);	break;
+		case VT_R8:
+			pvar->dblVal = *static_cast<double*>(var_value);	break;
+	}
+	return(vReturn);
+}

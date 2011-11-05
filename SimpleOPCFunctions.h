@@ -21,5 +21,6 @@ void RemoveGroup(IOPCServer* pIOPCServer, OPCHANDLE hServerGroup);
 void SetDataCallback(IUnknown* pGroupIUnknown, IOPCDataCallback* pSOCDataCallback,
 					 IConnectionPoint* &pIConnectionPoint, DWORD *pdwCookie);
 bool VarToStr (VARIANT pvar, char *buffer);
+bool GenerateVar (VARIANT* pvar, VARTYPE var_type, void* var_value);
 
 #endif

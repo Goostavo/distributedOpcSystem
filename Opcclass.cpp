@@ -63,9 +63,9 @@ void Opcclass::AddItem(wchar_t *item_id)
     OPCHANDLE hServerItem;
 	wcstombs_s(&m, buf, 100, item_id, _TRUNCATE);
 	printf("Adding the item %s to the group...\n", buf);
-    HServerItems_Vec.insert(HServerItems_Vec.end(),hServerItem);
     HServerItems_Name.insert(HServerItems_Name.end(),item_id);
-    AddTheItem(pIOPCItemMgt, hServerItem, item_id, (OPCHANDLE)HServerItems_Vec.size());    
+    AddTheItem(pIOPCItemMgt, hServerItem, item_id, (OPCHANDLE)HServerItems_Name.size());    
+    HServerItems_Vec.insert(HServerItems_Vec.end(),hServerItem);
 }
 
 void Opcclass::ConfigCallback(void)
@@ -126,4 +126,40 @@ void Opcclass::ActivatePulling(void)
 void Opcclass::DeactivatePulling(void)
 {
     Opcclass::SetGroupAF(pIOPCItemMgt,0);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Read from device the value of the item having the "hServerItem" server 
+// handle and belonging to the group whose one interface is pointed by
+// pGroupIUnknown. The value is put in varValue. 
+//
+
+void Opcclass::WriteItem(int hClientItem, void* varValue, VARTYPE var_type)
+{
+	// value of the item:
+	OPCITEMSTATE* pValue = NULL;
+    OPCHANDLE hServerItem = HServerItems_Vec[hClientItem-1];
+    VARIANT tempVariant;
+    VariantInit(&tempVariant);
+
+    //Prepare the VARIANT type
+    GenerateVar(&tempVariant, var_type, varValue);
+	//get a pointer to the IOPCSyncIOInterface:
+	IOPCSyncIO* pIOPCSyncIO;
+	pIOPCItemMgt->QueryInterface(__uuidof(pIOPCSyncIO), (void**) &pIOPCSyncIO);
+
+	// read the item value from the device:
+	HRESULT* pErrors = NULL; //to store error code(s)
+	HRESULT hr = pIOPCSyncIO->Write(1, &hServerItem, &tempVariant, &pErrors);
+	_ASSERT(!hr);
+
+	//Release memeory allocated by the OPC server:
+	CoTaskMemFree(pErrors);
+	pErrors = NULL;
+
+	CoTaskMemFree(pValue);
+	pValue = NULL;
+
+	// release the reference to the IOPCSyncIO interface:
+	pIOPCSyncIO->Release();
 }

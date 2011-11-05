@@ -30,7 +30,7 @@ class Opcclass
             void Opcclass::ConfigCallback();
             void Opcclass::ActivatePulling();
             void Opcclass::DeactivatePulling();
-
+            void Opcclass::WriteItem(int hClientItem, void* varValue, VARTYPE var_type);
     private:
             void Opcclass::SetGroupAF(IUnknown* pGroupIUnknown, BOOL ActiveFlag);
 
