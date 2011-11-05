@@ -15,6 +15,8 @@
 // Rafael Gilmar Ribeiro Gurgel
 
 #include <windows.h>
+#include "Opcclass.h"
 
 BOOL WriteSlot(HANDLE hSlot, LPTSTR lpszMessage);
 BOOL ReadSlot(HANDLE hSlot);
+void parseAndSend(char* information, Opcclass *OpcSd);

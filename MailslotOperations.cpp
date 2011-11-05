@@ -119,3 +119,119 @@ BOOL ReadSlot(HANDLE hSlot)
     CloseHandle(hEvent);
     return TRUE; 
 }
+
+//Parse the information sent by the Sockets client and write on the OPC registers.
+void parseAndSend(char* information, Opcclass *OpcSd)
+{
+    int tempValue = 0;  int aux = 0; int index = 0;
+    unsigned int tempUValue = 0;
+    float tempFloat;
+    double tempDouble;
+    char tempBuff[6];
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //Send the VT_I1 data
+    for (aux=0;aux<6;aux++)
+    {
+        tempBuff[aux]=information[aux+index];
+    }
+    sscanf(tempBuff, "%d", &tempValue);
+    //Set max and min values
+    if (tempValue > 127)
+        tempValue = 127;
+    else if (tempValue < -128)
+        tempValue = -128;
+    OpcSd->WriteItem(1,&tempValue,VT_I1);
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //Send the VT_I2 data
+    index=7*1;
+    for (aux=0;aux<6;aux++)
+    {
+        tempBuff[aux]=information[aux+index];
+    }
+    sscanf(tempBuff, "%f", &tempFloat);
+    OpcSd->WriteItem(2,&tempValue,VT_I2);
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //Send the VT_R4 data
+    index=7*2;
+    for (aux=0;aux<6;aux++)
+    {
+        tempBuff[aux]=information[aux+index];
+    }
+    sscanf(tempBuff, "%i", &tempFloat);
+    //Set max and min values
+    OpcSd->WriteItem(3,&tempValue,VT_R4);
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //Send the VT_R8 data
+    index=7*3;
+    for (aux=0;aux<6;aux++)
+    {
+        tempBuff[aux]=information[aux+index];
+    }
+    sscanf(tempBuff, "%i", &tempFloat);
+    //Set max and min values
+    OpcSd->WriteItem(4,&tempValue,VT_R8);
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //Send the VT_I4 data
+    index=7*4;
+    for (aux=0;aux<6;aux++)
+    {
+        tempBuff[aux]=information[aux+index];
+    }
+    sscanf(tempBuff, "%d", &tempValue);
+    //Set max and min values
+    if (tempValue > 2147483647)
+        tempValue = 2147483647;
+    else if (tempValue < -2147483648)
+        tempValue = -2147483648;
+    OpcSd->WriteItem(5,&tempValue,VT_I4);
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //Send the VT_UI1 data
+    index=7*5;
+    for (aux=0;aux<6;aux++)
+    {
+        tempBuff[aux]=information[aux+index];
+    }
+    sscanf(tempBuff, "%d", &tempValue);
+    //Set max and min values
+    if (tempValue > 256)
+        tempValue = 256;
+    else if (tempValue < 0)
+        tempValue = 0;
+    OpcSd->WriteItem(6,&tempValue,VT_UI1);
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //Send the VT_UI2 data
+    index=7*6;
+    for (aux=0;aux<6;aux++)
+    {
+        tempBuff[aux]=information[aux+index];
+    }
+    sscanf(tempBuff, "%d", &tempValue);
+    //Set max and min values
+    if (tempValue > 65535)
+        tempValue = 65535;
+    else if (tempValue < 0)
+        tempValue = 0;
+    OpcSd->WriteItem(7,&tempValue,VT_UI2);
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //Send the VT_UI4 data
+    index=7*7;
+    for (aux=0;aux<6;aux++)
+    {
+        tempBuff[aux]=information[aux+index];
+    }
+    sscanf(tempBuff, "%d", &tempUValue);
+    //Set max and min values
+    if (tempValue > 4294967295)
+        tempValue = 4294967295;
+    else if (tempValue < 0)
+        tempValue = 0;
+    OpcSd->WriteItem(8,&tempValue,VT_UI2);
+}

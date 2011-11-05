@@ -113,8 +113,8 @@ DWORD WINAPI dwCommunication (LPVOID opc)
 
     while (1)
     {
-        Opc_send->WriteItem(8, &debug_aux, VT_I2);    //Write a Item syncronously
-        debug_aux++;
+        //Opc_send->WriteItem(8, &debug_aux, VT_I2);    //Write a Item syncronously
+        //debug_aux++;
         Sleep(1000);
     }
 
