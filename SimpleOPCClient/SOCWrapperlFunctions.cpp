@@ -9,7 +9,6 @@
 #include <ObjIdl.h>
 #include <stdio.h>
 #include "opcda.h"
-#include "SOCAdviseSink.h"
 
 extern UINT OPC_DATA_TIME; // Defined in "SimpleOPCClient.cpp"
 
