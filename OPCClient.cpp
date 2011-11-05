@@ -6,9 +6,15 @@
 #include "SocketClient.h"
 #include "MailslotOperations.h"
 
+typedef unsigned (WINAPI *CAST_FUNCTION)(LPVOID);
+typedef unsigned *CAST_LPDWORD;
+
 //Main function of the OPC_Thread
 DWORD WINAPI dwOPC()
 {
+    HANDLE hCommunication;
+
+
     MSG msg;        //Used by the windows message buffer
     int bRet;       //Return values
     
@@ -35,6 +41,14 @@ DWORD WINAPI dwOPC()
     //Activate the callbacks
     Opc_tp->ActivateAsyncRead();
 
+    hCommunication = (HANDLE) _beginthreadex(
+        NULL,
+        0,
+        (CAST_FUNCTION)dwCommunication,
+        Opc_tp,
+        0,
+        NULL);
+
     //Keep processing the message loops
     do {
 		bRet = GetMessage( &msg, NULL, 0, 0 );
@@ -45,7 +59,17 @@ DWORD WINAPI dwOPC()
 		TranslateMessage(&msg); // This call is not really needed ...
 		DispatchMessage(&msg);  // ... but this one is!
 	} while(1);
+
+    CloseHandle (hCommunication);
     //Ending the Thread
+    _endthreadex((DWORD) 0);
+    return 0;
+}
+
+
+DWORD WINAPI dwCommunication (LPVOID opc)
+
+{
     _endthreadex((DWORD) 0);
     return 0;
 }
