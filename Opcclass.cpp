@@ -46,6 +46,7 @@ Opcclass::~Opcclass()
 	CoUninitialize();
 }
 
+//Add the default group to the server.
 void Opcclass::AddGroup()
 {
 	// Add the OPC group the OPC server and get an handle to the IOPCItemMgt
@@ -54,6 +55,7 @@ void Opcclass::AddGroup()
 	AddTheGroup(pIOPCServer, pIOPCItemMgt, hServerGroup);
 }
 
+// Add an Item to the server using the string to define it.
 void Opcclass::AddItem(wchar_t *item_id)
 {
 	// Add the OPC item. First we have to convert from wchar_t* to char*
@@ -68,6 +70,7 @@ void Opcclass::AddItem(wchar_t *item_id)
     HServerItems_Vec.insert(HServerItems_Vec.end(),hServerItem);
 }
 
+// Configure the OpcClass to use the DataCallback interface to do asyncronous reads
 void Opcclass::ConfigCallback(void)
 {
     // Establish a callback asynchronous read by means of the IOPCDaraCallback
@@ -83,6 +86,7 @@ void Opcclass::ConfigCallback(void)
 }
 
 // Set the group active flag state
+// This function should not be used directly, it is wrapped by the Activate/DeactivateAsyncRead
 void Opcclass::SetGroupAF(IUnknown* pGroupIUnknown, BOOL ActiveFlag)
 {
 	HRESULT hr;
@@ -116,23 +120,21 @@ void Opcclass::SetGroupAF(IUnknown* pGroupIUnknown, BOOL ActiveFlag)
 	return; 
 }
 
-//
-void Opcclass::ActivatePulling(void)
+// Activate the Asyncronous read callbacks
+void Opcclass::ActivateAsyncRead(void)
 {
     Opcclass::SetGroupAF(pIOPCItemMgt,1);
 }
 
-//
-void Opcclass::DeactivatePulling(void)
+// Deactivate the assyncronous read calbacks
+void Opcclass::DeactivateAsyncRead(void)
 {
     Opcclass::SetGroupAF(pIOPCItemMgt,0);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Read from device the value of the item having the "hServerItem" server 
-// handle and belonging to the group whose one interface is pointed by
-// pGroupIUnknown. The value is put in varValue. 
-//
+// Write the varValue value of the type var_type on the hClientItem Item 
+// on the group/server defined at Opcclass initialization;
 
 void Opcclass::WriteItem(int hClientItem, void* varValue, VARTYPE var_type)
 {

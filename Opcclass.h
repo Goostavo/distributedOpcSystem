@@ -25,12 +25,12 @@ class Opcclass
 			Opcclass();
 			~Opcclass();
             
-            void Opcclass::AddGroup();
-            void Opcclass::AddItem(wchar_t *endereco);
-            void Opcclass::ConfigCallback();
-            void Opcclass::ActivatePulling();
-            void Opcclass::DeactivatePulling();
-            void Opcclass::WriteItem(int hClientItem, void* varValue, VARTYPE var_type);
+            void Opcclass::AddGroup();                      //Add the default group Handle
+            void Opcclass::AddItem(wchar_t *endereco);      //Add the item on the defined address (string)
+            void Opcclass::ConfigCallback();                //Configure OPC client for asyncronous read
+            void Opcclass::ActivateAsyncRead();               //Activate asyncronous reception
+            void Opcclass::DeactivateAsyncRead();             //Deactuvate asyncronous reception
+            void Opcclass::WriteItem(int hClientItem, void* varValue, VARTYPE var_type);    //Write a Item syncronously
     private:
             void Opcclass::SetGroupAF(IUnknown* pGroupIUnknown, BOOL ActiveFlag);
 

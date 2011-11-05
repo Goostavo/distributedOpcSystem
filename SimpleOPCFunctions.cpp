@@ -250,32 +250,33 @@ bool VarToStr (VARIANT pvar, char *buffer)
 	{
 		case VT_BOOL:
 		case VT_I1:
-			sprintf(buffer, "%d",    pvar.iVal);	break;
+			sprintf_s(buffer,16, "%d",    pvar.iVal);	break;
 		case VT_I2:
-			sprintf(buffer, "%d",    pvar.intVal);	break;
+			sprintf_s(buffer,16, "%d",    pvar.intVal);	break;
 		case VT_I4:
-			sprintf(buffer, "%ld",   pvar.intVal);	break;
+			sprintf_s(buffer,16, "%ld",   pvar.intVal);	break;
 		case VT_UI1:
-			sprintf(buffer, "%u",    pvar.uiVal);	break;
+			sprintf_s(buffer,16, "%u",    pvar.uiVal);	break;
 		case VT_UI2:
-			sprintf(buffer, "%u",    pvar.ulVal);	break;
+			sprintf_s(buffer,16, "%u",    pvar.ulVal);	break;
 		case VT_UI4:
-			sprintf(buffer, "%lu",   pvar.ulVal);	break;
+			sprintf_s(buffer,16, "%lu",   pvar.ulVal);	break;
 		case VT_R4:
-			sprintf(buffer, "%6.2f", pvar.fltVal);	break;
+			sprintf_s(buffer,16, "%6.2f", pvar.fltVal);	break;
 		case VT_R8:
-			sprintf(buffer, "%lu",   pvar.dblVal);	break;
+			sprintf_s(buffer,16, "%lu",   pvar.dblVal);	break;
 		case VT_BSTR:
-			sprintf(buffer, "%s",    pvar.bstrVal);	break;
+			sprintf_s(buffer,16, "%s",    pvar.bstrVal);	break;
 		default:
-			sprintf(buffer, "%s", NULL);
+			sprintf_s(buffer,16, "%s", NULL);
 			vReturn = false;
 			break;
 	}
 	return(vReturn);
 }
 
-//Generate a VARIANT type variable with the data sent and the type specified
+///////////////////////////////////////////////////////////////////////////////////////
+// Setup a VARIANT type variable with the data sent and the type specified
 bool GenerateVar (VARIANT* pvar, VARTYPE var_type, void* var_value)
 {
 	bool vReturn = true;

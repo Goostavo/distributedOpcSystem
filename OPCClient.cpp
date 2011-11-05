@@ -6,18 +6,21 @@
 #include "SocketClient.h"
 #include "MailslotOperations.h"
 
+//Main function of the OPC_Thread
 DWORD WINAPI dwOPC()
 {
-    MSG msg;
-    int bRet;
+    MSG msg;        //Used by the windows message buffer
+    int bRet;       //Return values
     
-    Opcclass *Opc_tp = new Opcclass();			//Instancia Classe OPC
-	Opc_tp->AddGroup();
+    Opcclass *Opc_tp = new Opcclass();			//Instantiate OPC Class
+	Opc_tp->AddGroup();                         //Add the main group
 
+    //Add the random Items that will be read
     Opc_tp->AddItem((wchar_t *)L"Random.Boolean");
     Opc_tp->AddItem((wchar_t *)L"Random.Int1");
     Opc_tp->AddItem((wchar_t *)L"Random.Int2");
     Opc_tp->AddItem((wchar_t *)L"Random.Real4");
+    //Add the default Items that will be Writen
     Opc_tp->AddItem((wchar_t *)L"Bucket Brigade.Int1");
     Opc_tp->AddItem((wchar_t *)L"Bucket Brigade.Int2");
     Opc_tp->AddItem((wchar_t *)L"Bucket Brigade.Real4");
@@ -27,9 +30,12 @@ DWORD WINAPI dwOPC()
     Opc_tp->AddItem((wchar_t *)L"Bucket Brigade.UInt2");
     Opc_tp->AddItem((wchar_t *)L"Bucket Brigade.UInt4");
 
+    //Set the callback configuration
     Opc_tp->ConfigCallback();
-    Opc_tp->ActivatePulling();
+    //Activate the callbacks
+    Opc_tp->ActivateAsyncRead();
 
+    //Keep processing the message loops
     do {
 		bRet = GetMessage( &msg, NULL, 0, 0 );
 		if (!bRet){
