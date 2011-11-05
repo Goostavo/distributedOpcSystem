@@ -51,7 +51,6 @@ void Opcclass::AddGroup()
 {
 	// Add the OPC group the OPC server and get an handle to the IOPCItemMgt
 	//interface:
-	printf("Adding a group in the INACTIVE state for the moment...\n");
 	AddTheGroup(pIOPCServer, pIOPCItemMgt, hServerGroup);
 }
 
@@ -64,7 +63,6 @@ void Opcclass::AddItem(wchar_t *item_id)
     size_t m;
     OPCHANDLE hServerItem;
 	wcstombs_s(&m, buf, 100, item_id, _TRUNCATE);
-	printf("Adding the item %s to the group...\n", buf);
     HServerItems_Name.insert(HServerItems_Name.end(),item_id);
     AddTheItem(pIOPCItemMgt, hServerItem, item_id, (OPCHANDLE)HServerItems_Name.size());    
     HServerItems_Vec.insert(HServerItems_Vec.end(),hServerItem);
