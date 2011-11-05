@@ -8,6 +8,7 @@
 //
 
 #include "SOCDataCallback.h"
+#include <string>
 #include "../MailslotOperations.h"
 #include "../SimpleOPCFunctions.h"
 
@@ -118,7 +119,8 @@ HRESULT STDMETHODCALLTYPE SOCDataCallback::OnDataChange(
 	SYSTEMTIME st;
     char szLocalDate[255], szLocalTime[255];
 	bool status;
-	char buffer[100];
+    char bigbuffer[1024] = "";
+	char buffer[100] = "";
 	WORD quality;
 
 	// Validate arguments.  Return with "invalid argument" error code 
@@ -143,16 +145,16 @@ HRESULT STDMETHODCALLTYPE SOCDataCallback::OnDataChange(
 		// a few OPC data types are supported.
 		status = VarToStr(pvValues[dwItem], buffer);
 		if (status){
-            WriteSlot(hMailSocket,TEXT("DCB: Value = "));
-            WriteSlot(hMailSocket,TEXT(buffer));
+            strcat(bigbuffer,"DCB: Value = ");
+            strcat(bigbuffer,buffer);
             _itoa((int)phClientItems[dwItem],buffer,10);
-            WriteSlot(hMailSocket,TEXT(" Id = "));
-            WriteSlot(hMailSocket,TEXT(buffer));
+            strcat(bigbuffer," Id = ");
+            strcat(bigbuffer,TEXT(buffer));
 			quality = pwQualities [dwItem] & OPC_QUALITY_MASK;
 			if (quality == OPC_QUALITY_GOOD)
-				WriteSlot(hMailSocket,TEXT("\tQuality: good"));
+                strcat(bigbuffer,"\tQuality: Good");
 			else
-			    WriteSlot(hMailSocket,TEXT("\tQuality: not good"));
+                strcat(bigbuffer,"\tQuality: Not good");
 			// Code below extracted from the Microsoft KB:
 			//     http://support.microsoft.com/kb/188768
 			// Note that in order for it to work, the Visual Studio C++ must
@@ -165,11 +167,12 @@ HRESULT STDMETHODCALLTYPE SOCDataCallback::OnDataChange(
 			FileTimeToSystemTime(&lft, &st);
 			GetDateFormat(LOCALE_SYSTEM_DEFAULT, DATE_SHORTDATE, &st, NULL, szLocalDate, 255);
 			GetTimeFormat(LOCALE_SYSTEM_DEFAULT, 0, &st, NULL, szLocalTime, 255);
-            WriteSlot(hMailSocket,TEXT("\tTime: "));
-            WriteSlot(hMailSocket,TEXT(szLocalDate));
-            WriteSlot(hMailSocket,TEXT(" "));
-            WriteSlot(hMailSocket,TEXT(szLocalTime));
-            WriteSlot(hMailSocket,TEXT("\n"));
+            strcat(bigbuffer,"\tTime: ");
+            strcat(bigbuffer,szLocalDate);
+            strcat(bigbuffer," "); 
+            strcat(bigbuffer,szLocalTime);
+            strcat(bigbuffer,"\n");
+            WriteSlot(hMailSocket,TEXT(bigbuffer));
 		}
 		else WriteSlot(hMailSocket,TEXT("IOPCDataCallback: Unsupported item type\n"));
 	}

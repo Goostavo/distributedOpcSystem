@@ -64,7 +64,7 @@ int main (void)
     //Read Messages sent by the OPC Client thread.
     while (true)
     {
-       //ReadSlot(hMailslot);
+       ReadSlot(hMailslot);
        Sleep(100);
     }
 
