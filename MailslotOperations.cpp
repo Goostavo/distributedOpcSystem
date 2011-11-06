@@ -139,6 +139,10 @@ void parseAndSend(char* information, Opcclass *OpcSd)
     double tempDouble;
     char tempBuff[6];
 
+    //POG! TROCAR ISSO AQUI POR UM ENVIO PARA O MAILSLOT DO MAIN!
+    std::cout << information << std::endl;
+    //ENDPOG
+
     ////////////////////////////////////////////////////////////////////////////////
     //Send the VT_I1 data
     for (aux=0;aux<6;aux++)
