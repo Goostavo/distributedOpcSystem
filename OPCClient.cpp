@@ -109,8 +109,8 @@ DWORD WINAPI dwCommunication (LPVOID opc)
 
     while (true)
     {
-        ReadSlot(hMailslotOPC, bigBuffer);
-        parseAndSend(bigBuffer,Opc_send);
+        if (ReadSlot(hMailslotOPC, bigBuffer)==TRUE)
+            parseAndSend(bigBuffer,Opc_send);
     }
 
     CloseHandle (hMailslotOPC);

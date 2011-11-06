@@ -65,9 +65,8 @@ int main (void)
     //Read Messages sent by the OPC Client thread.
     while (true)
     {
-       ReadSlot(hMailslot,bigBuffer);
-       Sleep(100);
-       cout<<bigBuffer<<endl;
+       if (ReadSlot(hMailslot,bigBuffer) == TRUE)
+           cout<<bigBuffer<<endl;
     }
 
     //Wait for the Threads
